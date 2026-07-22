@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -48,7 +48,7 @@ const services = [
   {
     title: "Invisible Aligners",
     note: "Discreet orthodontics",
-    image: "invisible-aligners-v2.png",
+    image: "invisible-aligners-exact.png",
   },
   {
     title: "Dental Implants",
@@ -65,15 +65,18 @@ const stats = [
 ];
 
 const doctors = [
-  ["dentist-dark-hair.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
-  ["dentist-brown-hair.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
+  ["team-exact-2.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
+  ["team-exact-3.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
+  ["team-exact-1.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
   ["raw-12.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
   ["raw-20.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
+  ["team-exact-6.png", "Dr Husain Sabbah", "Founder · Implantology & Smile Design"],
 ];
-const carouselDoctors = [doctors.at(-1), ...doctors, doctors[0]];
+const carouselOffset = 2;
+const carouselDoctors = [doctors.at(-2), doctors.at(-1), ...doctors, doctors[0], doctors[1]];
 const doctorActions = [
-  [CalendarBlank, "View availability"],
-  [Phone, "Call doctor"],
+  ["icon-calendar-exact.svg", "View availability"],
+  ["icon-phone-exact.svg", "Call doctor"],
 ];
 const socialLinks = [
   [FacebookLogo, "Facebook"],
@@ -81,7 +84,7 @@ const socialLinks = [
   [ChatCircle, "Chat"],
 ];
 
-const treatmentIcons = [Tooth, ShieldCheck, Sparkle, Smiley, Heartbeat, Stethoscope, Star, UserCircle];
+const treatmentIcons = Array.from({ length: 8 }, (_, index) => `treatment-icon-${index + 1}-exact.svg`);
 const treatments = [
   ["01", "General Dentistry", "Check-ups, cleaning, and preventive care."],
   ["02", "Implantology", "Guided implants with digital planning."],
@@ -99,8 +102,8 @@ const articles = [
     date: "02 Jul 2026",
     title: "Veneers vs. bonding : which is right for your smile?",
     excerpt: "How we decide between the two most popular cosmetic treatments — and when neither is needed.",
-    author: "Dr Mira Haddad",
-    image: "veneer-shade-guide-v2.png",
+    author: "Dr Mina Haddad",
+    image: "veneer-shade-guide-exact.png",
     avatar: "raw-20.png",
   },
   {
@@ -350,7 +353,7 @@ function DigitalSmile() {
         <div className="digital-main relative">
           <h2 id="digital-title" className="mb-6 max-w-[620px] text-3xl font-extrabold uppercase leading-[.98] tracking-[-.04em] text-navy sm:text-4xl lg:text-[48px]">Digital smile design & guided implants</h2>
           <div className="digital-picture group relative h-[380px] overflow-hidden rounded-[42px] bg-aqua sm:h-[520px]">
-            <img src={asset("digital-smile-implants-v2.png")} alt="Digital jaw model showing four guided dental implants" loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]" />
+            <img src={asset("digital-smile-implants-exact.png")} alt="Digital jaw model showing four guided dental implants" loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]" />
             <div className="absolute inset-x-5 bottom-5 flex items-end justify-between rounded-[24px] bg-navy/90 p-5 text-white opacity-0 backdrop-blur transition duration-300 group-hover:opacity-100 sm:inset-x-8 sm:bottom-8 sm:p-6">
               <div><strong className="block text-lg">Plan before we treat</strong><small className="text-white/70">3D diagnostics for predictable outcomes</small></div>
               <ArrowUpRight size={24} />
@@ -385,16 +388,16 @@ function DoctorCard({ doctor, active }) {
       <div className={`doctor-image relative h-64 overflow-hidden rounded-[25px] ${active ? "bg-[#b9f6dc]" : "bg-soft-blue"}`}>
         <img src={asset(doctor[0])} alt={doctor[1]} loading="lazy" decoding="async" className="h-full w-full object-contain object-bottom transition duration-500 group-hover:scale-105" />
       </div>
-      <div className="doctor-body px-2 pb-2 pt-5">
+      <div className="doctor-body pt-4">
         <h3 className={`text-lg font-extrabold ${active ? "text-green" : "text-navy"}`}>{doctor[1]}</h3>
         <p className="mt-1 min-h-8 text-[10px] leading-4 text-slate">{doctor[2]}</p>
-        <div className="mt-5 flex items-center justify-between">
-          <div className="flex gap-2">
-            {doctorActions.map(([Icon, label]) => (
-              <button key={label} type="button" aria-label={label} className="grid h-11 w-11 place-items-center rounded-full border border-soft-blue text-navy transition hover:border-green hover:bg-green hover:text-navy focus-visible:outline-2 focus-visible:outline-green"><Icon size={16} /></button>
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex gap-1.5">
+            {doctorActions.map(([icon, label]) => (
+              <button key={label} type="button" aria-label={label} className="grid h-10 w-10 place-items-center rounded-full border border-soft-blue text-navy transition hover:border-green hover:bg-green hover:text-navy focus-visible:outline-2 focus-visible:outline-green"><img src={asset(icon)} alt="" className="h-[19px] w-[19px] object-contain" /></button>
             ))}
-            <a href="#appointment" aria-label="View profile" className="doctor-info inline-flex h-11 items-center gap-1 rounded-full bg-soft-blue px-3 text-[10px] font-extrabold text-navy transition hover:bg-green focus-visible:outline-2 focus-visible:outline-green"><UserCircle size={16} />info</a>
-            <a href="#contact" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-soft-blue text-navy transition hover:border-green hover:bg-green focus-visible:outline-2 focus-visible:outline-green"><InstagramLogo size={16} /></a>
+            <a href="#appointment" aria-label="View profile" className="doctor-info inline-flex h-10 items-center gap-1 rounded-full bg-soft-blue px-2.5 text-[10px] font-extrabold text-navy transition hover:bg-green focus-visible:outline-2 focus-visible:outline-green"><img src={asset("icon-profile-exact.svg")} alt="" className="h-[34px] w-[34px] object-contain" />info</a>
+            <a href="#contact" aria-label="Instagram" className="grid h-10 w-10 place-items-center rounded-full border border-soft-blue text-navy transition hover:border-green hover:bg-green focus-visible:outline-2 focus-visible:outline-green"><img src={asset("icon-instagram-exact.svg")} alt="" className="h-[18px] w-[18px] object-contain" /></a>
           </div>
         </div>
       </div>
@@ -403,20 +406,49 @@ function DoctorCard({ doctor, active }) {
 }
 
 function Team() {
-  const [active, setActive] = useState(1);
-  const rowRef = useRef(null);
-  useEffect(() => {
-    const row = rowRef.current;
-    if (!row || row.children.length < 2) return;
-    const padding = Number.parseFloat(getComputedStyle(row).paddingLeft) || 0;
-    row.scrollLeft = row.children[1].offsetLeft - padding;
+  const [position, setPosition] = useState(carouselOffset + 2);
+  const [step, setStep] = useState(0);
+  const [leadCards, setLeadCards] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(1);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const viewportRef = useRef(null);
+  const trackRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return undefined;
+
+    const measure = () => {
+      const firstCard = track.firstElementChild;
+      if (!firstCard) return;
+      const gap = Number.parseFloat(getComputedStyle(track).columnGap) || 0;
+      const cardWidth = firstCard.getBoundingClientRect().width;
+      const visibleCards = Math.max(1, Math.round((viewport.clientWidth + gap) / (cardWidth + gap)));
+      setStep(cardWidth + gap);
+      setLeadCards(visibleCards >= 3 ? 1 : 0);
+      setVisibleCards(visibleCards);
+    };
+
+    measure();
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(viewport);
+    return () => resizeObserver.disconnect();
   }, []);
 
   const move = (direction) => {
-    const next = (active + direction + doctors.length) % doctors.length;
-    setActive(next);
-    const card = rowRef.current?.children[next + 1];
-    card?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setPosition((current) => current + direction);
+  };
+
+  const finishMove = (event) => {
+    if (event.target !== event.currentTarget) return;
+    let resetPosition = position;
+    if (position >= carouselOffset + doctors.length) resetPosition = carouselOffset;
+    if (position < carouselOffset) resetPosition = carouselOffset + doctors.length - 1;
+    setIsAnimating(false);
+    if (resetPosition !== position) setPosition(resetPosition);
   };
 
   return (
@@ -428,13 +460,31 @@ function Team() {
             <h2 id="team-title" className="max-w-lg text-3xl font-extrabold uppercase leading-[.98] tracking-[-.04em] text-navy sm:text-4xl lg:text-[44px]">Meet your dental specialists</h2>
           </div>
           <div className="flex shrink-0 gap-3">
-            <button type="button" aria-label="Previous specialist" onClick={() => move(-1)} className="carousel-button bg-white text-navy"><CaretLeft size={18} weight="bold" /></button>
-            <button type="button" aria-label="Next specialist" onClick={() => move(1)} className="carousel-button bg-navy text-white"><CaretRight size={18} weight="bold" /></button>
+            <button type="button" aria-label="Previous specialist" onClick={() => move(-1)} disabled={isAnimating || step === 0} className="carousel-button bg-white text-navy disabled:cursor-default"><img src={asset("icon-arrow-left-exact.svg")} alt="" className="h-[27px] w-[27px] object-contain" /></button>
+            <button type="button" aria-label="Next specialist" onClick={() => move(1)} disabled={isAnimating || step === 0} className="carousel-button bg-navy text-white disabled:cursor-default"><img src={asset("icon-arrow-right-exact.svg")} alt="" className="h-[27px] w-[27px] object-contain" /></button>
           </div>
         </div>
       </div>
-      <div ref={rowRef} className="team-row no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-[max(20px,calc((100vw-1280px)/2))] py-3">
-        {carouselDoctors.map((doctor, index) => <div key={`${doctor[0]}-${index}`} className="snap-center"><DoctorCard doctor={doctor} active={index === active + 1} /></div>)}
+      <div ref={viewportRef} className="team-carousel-viewport site-shell">
+        <div
+          ref={trackRef}
+          className="team-track"
+          onTransitionEnd={finishMove}
+          style={{
+            transform: `translate3d(${-Math.max(0, position - leadCards) * step}px, 0, 0)`,
+            transition: isAnimating ? "transform 420ms cubic-bezier(.22,1,.36,1)" : "none",
+          }}
+        >
+          {carouselDoctors.map((doctor, index) => {
+            const firstVisible = position - leadCards;
+            const isVisible = index >= firstVisible && index < firstVisible + visibleCards;
+            return (
+              <div key={`${doctor[0]}-${index}`} className="team-slide" aria-hidden={!isVisible} inert={!isVisible ? true : undefined}>
+                <DoctorCard doctor={doctor} active={index === position} />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -447,12 +497,12 @@ function Treatments() {
         <SectionHeading eyebrow="Treatments" title="Explore our dental treatments" id="treatments-title" copy="A full range of preventive, restorative, and cosmetic dentistry—every treatment planned digitally and explained clearly." />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {treatments.map(([number, title, copy], index) => {
-            const Icon = treatmentIcons[index];
+            const icon = treatmentIcons[index];
             return (
               <a key={title} href="#appointment" className="group relative min-h-44 overflow-hidden rounded-[26px] border border-soft-blue bg-white p-6 transition duration-300 hover:-translate-y-1.5 hover:border-green hover:shadow-[0_18px_45px_rgba(9,86,126,.1)] focus-visible:outline-2 focus-visible:outline-green">
                 <div className="flex items-start justify-between">
                   <span className="text-sm font-extrabold text-pale-blue">{number}</span>
-                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-sky text-navy transition duration-300 group-hover:bg-green"><Icon size={17} weight="duotone" /></span>
+                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-sky text-navy transition duration-300 group-hover:bg-green"><img src={asset(icon)} alt="" className="h-5 w-5 object-contain" /></span>
                 </div>
                 <h3 className="mt-7 text-base font-extrabold text-navy">{title}</h3>
                 <p className="mt-2 text-[10px] leading-4 text-slate">{copy}</p>

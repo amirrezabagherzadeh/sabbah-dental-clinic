@@ -150,6 +150,26 @@ img {
   outline-offset: 3px;
 }
 
+.team-carousel-viewport {
+  margin-top: 1.5rem;
+  overflow: hidden;
+  padding-block: 1rem 2rem;
+}
+
+.team-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  will-change: transform;
+}
+
+.team-slide {
+  display: flex;
+  min-width: 0;
+  flex: 0 0 100%;
+  justify-content: center;
+}
+
 .field-label {
   display: flex;
   flex-direction: column;
@@ -239,11 +259,19 @@ input[type="date"].field-control:focus::-webkit-datetime-edit {
   .site-shell {
     width: min(100% - 4rem, 1280px);
   }
+
+  .team-slide {
+    flex-basis: calc((100% - 20px) / 2);
+  }
 }
 
 @media (min-width: 1024px) {
   .site-shell {
     width: min(100% - 6rem, 1280px);
+  }
+
+  .team-slide {
+    flex-basis: calc((100% - 40px) / 3);
   }
 }
 
@@ -529,7 +557,8 @@ input[type="date"].field-control:focus::-webkit-datetime-edit {
   }
 
   .team-section {
-    height: 820px;
+    min-height: 820px;
+    height: auto;
     padding: 55px 0 0;
   }
 
@@ -556,21 +585,24 @@ input[type="date"].field-control:focus::-webkit-datetime-edit {
     height: 64px;
   }
 
-  .team-row {
-    gap: 24px;
-    margin-top: 170px;
-    padding: 0 48px 24px;
-    overflow-y: visible;
-    scroll-snap-type: none;
+  .team-carousel-viewport {
+    width: 1176px;
+    margin-top: 32px;
+    padding-top: 56px;
+    padding-bottom: 24px;
   }
 
-  .team-row > div {
-    min-width: 336px;
+  .team-track {
+    gap: 24px;
+  }
+
+  .team-slide {
+    flex-basis: calc((100% - 48px) / 3);
   }
 
   .doctor-card {
-    width: 336px;
-    min-width: 336px;
+    width: 100%;
+    min-width: 0;
     max-width: none;
     height: 435px;
     padding: 16px;
@@ -606,8 +638,8 @@ input[type="date"].field-control:focus::-webkit-datetime-edit {
 
   .doctor-card-active .doctor-body button,
   .doctor-card-active .doctor-body a {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
   }
 
   .doctor-card-active .doctor-body .doctor-info {

@@ -83,10 +83,22 @@ Fixes made:
 
 - No actionable P0, P1, or P2 findings remain in the final full-view and focused comparisons.
 
+### Iteration 4 — contained three-card carousel, passed
+
+- New source visual truth: `C:\Users\amirr\AppData\Local\Temp\codex-clipboard-acabf8aa-fbb9-4efe-8b8a-582e0152c90e.png` (2048 × 400 px, DPR 1 reference image).
+- New implementation evidence: `H:\Website\Dental\.design\team-carousel-viewport-1513.png` (1498 × 1000 px browser capture at a 1513 × 1000 CSS viewport, DPR 1).
+- Normalized comparison: `H:\Website\Dental\.design\team-carousel-comparison.png` (1498 × 892 px). The reference rail was proportionally resized to 1498 px wide and stacked above the focused implementation crop.
+- State: desktop, middle specialist selected, carousel at its initial position.
+- The reference establishes the horizontal rail behavior and overflow treatment; the existing Figma card anatomy, active-card emphasis, typography, assets, colors, and controls remain the visual source for the cards themselves.
+- The carousel is now clipped to the same 1176 px content width as adjacent sections. Exactly three 376 px cards are visible with 24 px gaps; off-frame cards do not leak into the page.
+- The active card remains centered with a measured center delta of 0 px. Next and previous controls each move the visible sequence by exactly one 400 px card-plus-gap step.
+- Responsive verification: two cards at 768 px and one centered card at 390 px, with zero document overflow at all tested sizes.
+- Post-fix browser console: no warnings or errors.
+
 ## Interaction And Runtime Verification
 
 - Mobile navigation opens with all six links and closes through the labeled control.
-- Specialist next control advances the selected card; the carousel begins with the same left/right edge peeks as the source.
+- Specialist next/previous controls advance exactly one card. Desktop shows three contained cards, tablet two, and mobile one.
 - Appointment form accepts treatment, doctor, name, phone, email, date, and preferred-time input; submission displays the success confirmation and resets to the default time.
 - Keyboard focus was exercised and renders the intended 2 px green outline with 3 px offset.
 - Browser console on the current clean reload: no warnings or errors.
@@ -99,7 +111,6 @@ Fixes made:
 
 ## Follow-up Polish
 
-- [P3] Two specialist portraits and the guided-implant render are compositionally matched generated assets because those exact original raster files were not included in the capped Figma asset export; the subjects, crops, palette, card backgrounds, and dimensions match the source.
 - [P3] Separate Figma hover-variant frames were not exposed by the provided static node; implemented hover/focus behavior uses the same navy/green tokens, elevations, radii, and motion language as the visible components.
 
 final result: passed
